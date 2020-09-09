@@ -1,11 +1,8 @@
 package by.uniqo.telegrambot.service;
 
 
-import by.uniqo.telegrambot.BotCommand;
-import by.uniqo.telegrambot.processor.HelpProcessor;
-import by.uniqo.telegrambot.processor.NoneProcessor;
-import by.uniqo.telegrambot.processor.SettingsProcessor;
-import by.uniqo.telegrambot.processor.StartProcessor;
+import by.uniqo.telegrambot.enums.BotCommand;
+import by.uniqo.telegrambot.processor.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -23,6 +20,10 @@ public class RequestDispatcher {
     StartProcessor startProcessor;
     @Autowired
     NoneProcessor noneProcessor;
+    @Autowired
+    MagicBallProcessor magicBallProcessor;
+    @Autowired
+    UniversalSpeechCodeProcessor universalSpeechCodeProcessor;
 
     public void dispatch(Update update) {
         switch (getCommand(update)) {
@@ -38,6 +39,12 @@ public class RequestDispatcher {
             case NONE:
                 messageService.sendMessage(update.getMessage(), noneProcessor.run());
                 break;
+            case MAGIC_BALL:
+                messageService.sendMessage(update.getMessage(),  magicBallProcessor.run());
+                break;
+            case UNIVERSAL_SPEECH_CODE:
+                messageService.sendMessage(update.getMessage(), universalSpeechCodeProcessor.run());
+                break;
         }
     }
 
@@ -52,6 +59,10 @@ public class RequestDispatcher {
                     return BotCommand.START;
                 } else if (msgText.startsWith(BotCommand.SETTING.getCommand())) {
                     return BotCommand.SETTING;
+                }else if (msgText.startsWith(BotCommand.MAGIC_BALL.getCommand())) {
+                    return BotCommand.MAGIC_BALL;
+                }else if (msgText.startsWith(BotCommand.UNIVERSAL_SPEECH_CODE.getCommand())) {
+                    return BotCommand.UNIVERSAL_SPEECH_CODE;
                 }
             }
         }

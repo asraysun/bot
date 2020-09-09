@@ -1,4 +1,4 @@
-package by.uniqo.telegrambot;
+package by.uniqo.telegrambot.bean;
 
 import by.uniqo.telegrambot.service.RequestDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
